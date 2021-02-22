@@ -4,11 +4,24 @@
 #define SIZE 200
 
 typedef struct paciente PACIENTE;
+typedef struct medico MEDICO;
 
 struct paciente{
 	char nome[SIZE];
 	char idade[SIZE];
 	char cpf[SIZE];
+	char endereco[SIZE];
+	char telefone[SIZE];
+	char email[SIZE];
+};
+
+struct medico{
+	char nome[SIZE];
+	char data_nasci[SIZE];
+	char crm[SIZE];
+	char situacao[SIZE];
+	char cpf[SIZE];
+	char rg[SIZE];
 	char endereco[SIZE];
 	char telefone[SIZE];
 	char email[SIZE];
@@ -21,7 +34,8 @@ void menu();
 void pesquisa();
 void cadastroPaci();
 // void cadastroAgend
-// void cadastroMedi
+void cadastroMedi();
+void pesquisaMedi();
 // void cadastroFunci
 // void reclama_elogio
 // void canc_consulta
@@ -31,7 +45,9 @@ int main(void){
 	telaLogin();
 	menu();
 	cadastroPaci();
-	pesquisa();			
+	cadastroMedi();
+	pesquisa();
+	pesquisaMedi();			
 }
 
 void telaLogin(){
@@ -98,18 +114,26 @@ void menu(){
 		printf("\n---MENU---\n");
 		printf("\n");
 		printf("1 - Cadastrar paciente\n");
-		printf("2 - Consultar pacientes\n");
-		printf("3 - Sair\n");		
+		printf("2 - Cadastrar medico\n");
+		printf("3 - Consultar pacientes\n");
+		printf("4 - Consultar medico\n");
+		printf("5 - Sair\n");		
 		scanf("%d", &op);
 		switch(op){
 			case 1:
 				cadastroPaci();
 				break;
 			case 2:
-				pesquisa();
+				cadastroMedi();
 				break;
 			case 3:
-				exit(0);
+				pesquisa();
+				break;
+			case 4:
+				pesquisaMedi();
+				break;
+			case 5:
+				exit(0);	
 			default:
 				printf("Digite uma opcao valida");
 				break;		
@@ -120,7 +144,7 @@ void menu(){
 
 void cadastroPaci(){
 	FILE *arquivo;// ponteiro do arquivo .txt.
-	FILE *arquivo2;
+	FILE *arquivo2;// ponteiro arquivo db_binPacientes.
 	static int linha;
 	PACIENTE paciente;
 	arquivo= fopen("db_Paciente.txt", "a");// abre o arquivo texto. "a" adiciona o texto a um arquivo ja existente.
@@ -206,3 +230,114 @@ void pesquisa(){
 }while(op==1);
 			
 }// fim da função consulta
+
+
+void cadastroMedi(){
+	system("cls");
+	FILE *arquivo3; // ponteiro do arquivo db_Medico.
+	FILE *arquivo4; // ponteiro do arquivo db_binMedico.
+	MEDICO medico;
+	
+	arquivo3 = fopen("db_Medico.txt", "a");
+	arquivo4 = fopen("db_binMedico.txt", "ab");
+	
+do{
+	
+	fflush(stdin);
+	printf("Digite o nome: ");
+	gets(medico.nome);
+	fprintf(arquivo3, "\nNome: %s\n", medico.nome);
+	
+	fflush(stdin);
+	printf("Digite o ano de nascimento: ");
+	gets(medico.data_nasci);
+	fprintf(arquivo3, "Data de Nascimento: %s\n", medico.data_nasci);
+	
+	fflush(stdin);
+	printf("Digite o numero de CRM: ");
+	gets(medico.crm);
+	fprintf(arquivo3, "CRM: %s\n", medico.crm);
+	
+	fflush(stdin);
+	printf("Digite a situacao do medico: ");
+	gets(medico.situacao);
+	fprintf(arquivo3, "Situação: %s\n", medico.situacao);
+	
+	fflush(stdin);
+	printf("Digite o CPF: ");
+	gets(medico.cpf);
+	fprintf(arquivo3, "CPF: %s\n", medico.cpf);
+	
+	fflush(stdin);
+	printf("Digite o RG: ");
+	gets(medico.rg);
+	fprintf(arquivo3, "RG: %s\n", medico.rg);
+	
+	fflush(stdin);
+	printf("Digite o endereco: ");
+	gets(medico.endereco);
+	fprintf(arquivo3, "Endereço: %s\n", medico.endereco);
+	
+	fflush(stdin);
+	printf("Digite o telefone: ");
+	gets(medico.telefone);
+	fprintf(arquivo3, "Telefone: %s\n", medico.telefone);
+	
+	fflush(stdin);
+	printf("Digite o Email: ");
+	gets(medico.email);
+	fprintf(arquivo3, "Email: %s\n", medico.email);
+	
+	fwrite(&medico, sizeof(MEDICO), 1, arquivo4);
+	printf("\nDigite 1 para continuar pesquisando ou outro valor para sair. ");
+	scanf("%d", &op);
+	fclose(arquivo3);
+	fclose(arquivo4);
+	
+}while(op==1);	
+}
+
+void pesquisaMedi(){
+	
+	FILE *arquivo4; // ponteiro arquivo db_binMedi
+	
+	char cpfPesquisa[SIZE];
+	char crmPesquisa[SIZE];
+	MEDICO medico;
+	arquivo4 = fopen("db_binMedico.txt", "r");
+	
+	do{
+	printf("Digite 1 para pesquisar o doutor(a) pelo cpf, ou 2 para pesquisar pelo CRM: ");
+	scanf("%d", &op);
+	switch(op){
+		
+		case 1:
+			printf("Digite o CPF: ");
+			scanf("%s", &cpfPesquisa);
+			while(fread(&medico, sizeof(MEDICO), 1, arquivo4)==1){
+					if (strcmp(cpfPesquisa, medico.cpf)==0){
+					printf("\nNome: %s\nData de Nascimento: %s\nCRM: %s\nSituacao: %s\nCPF: %s\nRG: %s\n Endereco: %s\nTelefone: %s\nEmail: %s" , medico.nome, medico.data_nasci, medico.crm, medico.situacao, medico.cpf, medico.rg, medico.endereco, medico.telefone, medico.email);
+				}
+			}
+				break;
+		case 2:
+			printf("Digite o CRM: ");
+			scanf("%s", &crmPesquisa);
+			while(fread(&medico, sizeof(MEDICO), 1, arquivo4)==1){
+					if (strcmp(crmPesquisa, medico.crm)==0){
+					printf("\nNome: %s\nData de Nascimento: %s\nCRM: %s\nSituacao: %s\nCPF: %s\nRG: %s\n Endereco: %s\nTelefone: %s\nEmail: %s" , medico.nome, medico.data_nasci, medico.crm, medico.situacao, medico.cpf, medico.rg, medico.endereco, medico.telefone, medico.email);
+				}	
+			}
+				break;
+		default:
+			printf("\nOpcao invalida.");
+			break;		
+	}	
+		
+	printf("\nDigite 1 para continuar pesquisando ou outro valor para sair. ");
+	scanf("%d", &op);
+	fclose(arquivo4);		
+	}while(op==1);	
+} // fim da função pesquisaMedi
+
+

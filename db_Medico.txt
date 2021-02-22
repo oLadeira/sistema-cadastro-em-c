@@ -1,0 +1,28 @@
+Nome: Doutor luiz silva
+Data de Nascimento: 1991
+CRM: 123
+Situação: ativo
+CPF: 775
+RG: 32323
+Endereço: lalaelaleale
+Telefone: 123
+Email: dsadasd
+Nome: doutor lucas ladeira
+Data de Nascimento: 2002
+CRM: 4321
+Situação: ativo
+CPF: 993
+RG: 33232
+Endereço: rua tal casa tal numero 2221
+Telefone: 00999898980
+Email: lucuaucaucau@lcalca
+
+Nome: doutor teste
+Data de Nascimento: 1991
+CRM: 551
+Situação: aaaa
+CPF: 786
+RG: 232323
+Endereço: sadadasd
+Telefone: 222112
+Email: sadasdasdas
