@@ -1,0 +1,20 @@
+
+Nome: pedro
+Ano nascimento: 1993
+RG: 11100
+CPF: 4321
+Telefone: 220202
+E-mail: lalalal
+Endereço: rua talll
+Cargo: enfermeiro
+Salário: 3000
+
+Nome: roberta
+Ano nascimento: 1983
+RG: 20000
+CPF: 9980
+Telefone: 232323
+E-mail: llaldlasldasl
+Endereço: ruaaaa
+Cargo: medica
+Salário: 10000

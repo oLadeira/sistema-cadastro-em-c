@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h> // biblioteca para o comando system("cls")
-#define SIZE 200
+#define SIZE 200 // definindo a palavra SIZE no valor 200 (usado para definir o tamanho das variáveis char)
 #include <locale.h> // utilizar acentuação da lingua pt BR
+#include <unistd.h> // usada para função de delay (sleep)
 
 typedef struct paciente PACIENTE;
 typedef struct medico MEDICO;
 typedef struct avaliacao AVALIACAO;
+typedef struct funcionario FUNCIONARIO;
 
 struct paciente{
 	char nome[SIZE];
@@ -35,18 +37,31 @@ struct avaliacao{
 	char obs[SIZE];
 };
 
+struct funcionario{
+	char nome[SIZE];
+	char ano_nasci[SIZE];
+	char rg[SIZE];
+	char telefone[SIZE];
+	char email[SIZE];
+	char cpf[SIZE];
+	char endereco[SIZE];
+	char funcao[SIZE];
+	char salario[SIZE];
+};
+
 int op;
 
 void telaLogin();
 void menu();
 void pesquisa();
 void cadastroPaci();
-// void cadastroAgend
+// void cadastroAgend();
 void cadastroMedi();
 void pesquisaMedi();
-// void cadastroFunci
+void cadastroFunci();
+void pesquisaFunci();
 void avaliacao();
-// void canc_consulta
+// void canc_consulta();
 void pesquisaAvali();
 
 int main(void){
@@ -55,8 +70,10 @@ int main(void){
 	menu();
 	cadastroPaci();
 	cadastroMedi();
+	cadastroFunci();
 	pesquisa();
 	pesquisaMedi();
+	pesquisaFunci();
 	avaliacao();
 	pesquisaAvali();		
 }
@@ -93,27 +110,32 @@ void telaLogin(){
 		e= strcmp(senha, "senhaadm123");
 		
 		if (a==0 && e==0){
-			printf("\nLogou");
+			printf("\nUsuário Logado !");
+			sleep(1.5);
 			system("cls");
 			conf_geral++;
 			}
 		else if (b==0 && e==0){
-			printf("Logou");
+			printf("\nUsuário Logado !");
+			sleep(1.5);
 			system("cls");
 			conf_geral++;
 			}
 		else if (c==0 && e==0){
-			printf("Logou");
+			printf("\nUsuário Logado !");
+			sleep(1.5);
 			system("cls");
 			conf_geral++;
 			}
 		else if (d==0 && e==0){
-			printf("Logou");
+			printf("\nUsuário Logado !");
+			sleep(1.5);
 			system("cls");
 			conf_geral++;
 			}		
 		else{
 			printf("\nLogin ou senha incorretos.");
+			sleep(2);//usado para causar um delay, dando tempo do usuário ler a mensagem de login incorreto
 			conf_geral = 0;
 		}	
 					
@@ -122,15 +144,26 @@ void telaLogin(){
 
 void menu(){
 	do{
-		printf("\n---MENU---\n");
+		printf("\n--------------------------------------\n");
+		printf("      CONSULTÓRIOS SANTA TEREZA         ");
+		printf("\n--------------------------------------\n");
 		printf("\n");
-		printf("1 - Cadastrar paciente\n");
-		printf("2 - Cadastrar medico\n");
-		printf("3 - Consultar pacientes\n");
-		printf("4 - Consultar medico\n");
-		printf("5 - Registrar avaliação\n");
-		printf("6 - Consultar avaliações\n");
-		printf("7 - Sair\n");		
+		printf("\n");
+		printf("\n Digite uma das opções para prosseguir ! \n");
+		printf("\n");
+		printf("---------------------------\n");
+		printf(" 1 - Cadastrar paciente\n");
+		printf(" 2 - Cadastrar médico\n");
+		printf(" 3 - Cadastrar funcionário\n");
+		printf("---------------------------\n");
+		printf(" 4 - Consultar pacientes\n");
+		printf(" 5 - Consultar médico\n");
+		printf(" 6 - Consultar funcionário\n");
+		printf("---------------------------\n");
+		printf(" 7 - Registrar avaliação\n");
+		printf(" 8 - Consultar avaliações\n");
+		printf("---------------------------\n");
+		printf(" 9 - Sair\n");		
 		scanf("%d", &op);
 		switch(op){
 			case 1:
@@ -140,19 +173,25 @@ void menu(){
 				cadastroMedi();
 				break;
 			case 3:
-				pesquisa();
+				cadastroFunci();
 				break;
 			case 4:
-				pesquisaMedi();
+				pesquisa();
 				break;
 			case 5:
-				avaliacao();
+				pesquisaMedi();
 				break;
 			case 6:
-				pesquisaAvali();
+				pesquisaFunci();
 				break;
 			case 7:
-				exit(0);			
+				avaliacao();
+				break;
+			case 8:
+				pesquisaAvali();
+				break;
+			case 9:
+				exit(0);				
 			default:
 				printf("\nDigite uma opção válida\n");
 				break;		
@@ -375,17 +414,17 @@ void avaliacao(){
 	arquivo6 = fopen("db_BinAvaliacao.txt", "ab");
 	
 	fflush(stdin);
-	printf("Digite o nome do cliente: ");
+	printf("\nDigite o nome do cliente: ");
 	gets(avaliacao.nome);
 	fprintf(arquivo5, "\nNome: %s\n", avaliacao.nome);
 	
 	fflush(stdin);
-	printf("A avaliação é positiva ou negativa ? ");
+	printf("\nA avaliação é positiva ou negativa ? ");
 	gets(avaliacao.avali);
 	fprintf(arquivo5, "Avaliação: %s\n", avaliacao.avali);
 
 	fflush(stdin);
-	printf("Digite a observação : ");
+	printf("\nDigite a observação : ");
 	gets(avaliacao.obs);
 	fprintf(arquivo5, "Obs: %s\n", avaliacao.obs);
 	
@@ -415,3 +454,107 @@ void pesquisaAvali(){
 	fclose(arquivo6);
 	}while(op!=1);
 }// fim da função consulta avaliacao
+
+void cadastroFunci(){
+	system("cls");
+	FILE *arquivo7;
+	FILE *arquivo8;
+	FUNCIONARIO funcionario;
+	do{
+		arquivo7 = fopen("db_Funcionario.txt", "a");
+		arquivo8 = fopen("db_BinFuncionario.txt", "ab");
+		
+		fflush(stdin);
+		printf("\nDigite o nome do funcionário: ");
+		gets(funcionario.nome);
+		fprintf(arquivo7, "\nNome: %s\n", funcionario.nome);
+		
+		fflush(stdin);
+		printf("\nDigite o ano de nascimento do funcionário: ");
+		gets(funcionario.ano_nasci);
+		fprintf(arquivo7, "Ano nascimento: %s\n", funcionario.ano_nasci);
+		
+		fflush(stdin);
+		printf("\nDigite o RG do funcionário: ");
+		gets(funcionario.rg);
+		fprintf(arquivo7, "RG: %s\n", funcionario.rg);
+		
+		fflush(stdin);
+		printf("\nDigite o CPF do funcionário: ");
+		gets(funcionario.cpf);
+		fprintf(arquivo7, "CPF: %s\n", funcionario.cpf);
+		
+		fflush(stdin);
+		printf("\nDigite o telefone do funcionário: ");
+		gets(funcionario.telefone);
+		fprintf(arquivo7, "Telefone: %s\n", funcionario.telefone);
+		
+		fflush(stdin);
+		printf("\nDigite o E-mail do funcionário: ");
+		gets(funcionario.email);
+		fprintf(arquivo7, "E-mail: %s\n", funcionario.email);
+		
+		fflush(stdin);
+		printf("\nDigite o endereço do funcionário: ");
+		gets(funcionario.endereco);
+		fprintf(arquivo7, "Endereço: %s\n", funcionario.endereco);
+		
+		fflush(stdin);
+		printf("\nDigite o cargo do funcionário: ");
+		gets(funcionario.funcao);
+		fprintf(arquivo7, "Cargo: %s\n", funcionario.funcao);
+		
+		fflush(stdin);
+		printf("\nDigite o salário do funcionário: ");
+		gets(funcionario.salario);
+		fprintf(arquivo7, "Salário: %s\n", funcionario.salario);
+
+		fwrite(&funcionario, sizeof(FUNCIONARIO), 1, arquivo8);
+		
+		printf("\nDigite 1 para continuar cadastrando ou outro valor para sair. ");
+		scanf("%d", &op);
+		system("cls");
+		fclose(arquivo7);
+		fclose(arquivo8);
+	}while(op==1);
+}
+
+void pesquisaFunci(){
+	FILE *arquivo8;
+	FUNCIONARIO funcionario;
+	char pesquisaCPF[SIZE];
+	char pesquisaNome[SIZE];
+	do{	
+		system("cls");	
+		arquivo8 = fopen("db_BinFuncionario.txt", "r");
+		printf("Digite 1 para pesquisar o funcionário pelo nome, ou 2 para pesquisar pelo CPF: ");
+		scanf("%d", &op);
+		fflush(stdin);
+		switch(op){
+			case 1:
+				printf("\nDigite o nome do funcionário: ");
+				gets(pesquisaNome);
+				while(fread(&funcionario, sizeof(FUNCIONARIO), 1, arquivo8)==1){
+					if (strcmp(pesquisaNome, funcionario.nome)==0){
+					printf("\nNome: %s \nAno Nascimento: %s \nRG: %s \nCPF: %s \nTelefone: %s \nE-mail: %s \nEndereço: %s \nCargo: %s \nSalário: %s\n", funcionario.nome, funcionario.ano_nasci, funcionario.rg, funcionario.cpf, funcionario.telefone, funcionario.email, funcionario.endereco, funcionario.funcao, funcionario.salario);
+				}
+		}	
+				break;
+	
+			case 2:
+				printf("\nDigite o CPF do funcionário: ");
+				gets(pesquisaCPF);
+				while(fread(&funcionario, sizeof(FUNCIONARIO), 1, arquivo8)==1){
+					if (strcmp(pesquisaCPF, funcionario.cpf)==0){
+					printf("\nNome: %s \nAno Nascimento: %s \nRG: %s \nCPF: %s \nTelefone: %s \nE-mail: %s \nEndereço: %s \nCargo: %s \nSalário: %s\n", funcionario.nome, funcionario.ano_nasci, funcionario.rg, funcionario.cpf, funcionario.telefone, funcionario.email, funcionario.endereco, funcionario.funcao, funcionario.salario);					
+				}
+						
+		}
+				break;
+		}		
+		printf("\nDigite 1 para continuar pesquisando, ou outro valor para sair");
+		scanf("%d", &op);
+		system("cls");
+		fclose(arquivo8);
+	}while(op==1);
+}
