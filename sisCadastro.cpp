@@ -6,6 +6,7 @@
 
 typedef struct paciente PACIENTE;
 typedef struct medico MEDICO;
+typedef struct avaliacao AVALIACAO;
 
 struct paciente{
 	char nome[SIZE];
@@ -28,6 +29,12 @@ struct medico{
 	char email[SIZE];
 };
 
+struct avaliacao{
+	char nome[SIZE];
+	char avali[SIZE];
+	char obs[SIZE];
+};
+
 int op;
 
 void telaLogin();
@@ -38,8 +45,9 @@ void cadastroPaci();
 void cadastroMedi();
 void pesquisaMedi();
 // void cadastroFunci
-// void reclama_elogio
+void avaliacao();
 // void canc_consulta
+void pesquisaAvali();
 
 int main(void){
 	setlocale(LC_ALL, ""); // acentuação pt-BR
@@ -48,7 +56,9 @@ int main(void){
 	cadastroPaci();
 	cadastroMedi();
 	pesquisa();
-	pesquisaMedi();			
+	pesquisaMedi();
+	avaliacao();
+	pesquisaAvali();		
 }
 
 void telaLogin(){
@@ -118,7 +128,9 @@ void menu(){
 		printf("2 - Cadastrar medico\n");
 		printf("3 - Consultar pacientes\n");
 		printf("4 - Consultar medico\n");
-		printf("5 - Sair\n");		
+		printf("5 - Registrar avaliação\n");
+		printf("6 - Consultar avaliações\n");
+		printf("7 - Sair\n");		
 		scanf("%d", &op);
 		switch(op){
 			case 1:
@@ -134,7 +146,13 @@ void menu(){
 				pesquisaMedi();
 				break;
 			case 5:
-				exit(0);	
+				avaliacao();
+				break;
+			case 6:
+				pesquisaAvali();
+				break;
+			case 7:
+				exit(0);			
 			default:
 				printf("\nDigite uma opção válida\n");
 				break;		
@@ -346,4 +364,54 @@ void pesquisaMedi(){
 	}while(op==1);	
 } // fim da função pesquisaMedi
 
+void avaliacao(){
+	int validacao=0;
+	AVALIACAO avaliacao;
+	FILE *arquivo5;
+	FILE *arquivo6;
+	system("cls");
+	do{
+	arquivo5 = fopen("db_Avaliacao.txt", "a");
+	arquivo6 = fopen("db_BinAvaliacao.txt", "ab");
+	
+	fflush(stdin);
+	printf("Digite o nome do cliente: ");
+	gets(avaliacao.nome);
+	fprintf(arquivo5, "\nNome: %s\n", avaliacao.nome);
+	
+	fflush(stdin);
+	printf("A avaliação é positiva ou negativa ? ");
+	gets(avaliacao.avali);
+	fprintf(arquivo5, "Avaliação: %s\n", avaliacao.avali);
 
+	fflush(stdin);
+	printf("Digite a observação : ");
+	gets(avaliacao.obs);
+	fprintf(arquivo5, "Obs: %s\n", avaliacao.obs);
+	
+	fwrite(&avaliacao, sizeof(AVALIACAO), 1, arquivo6);
+
+	printf("\nDigite 1 para continuar registrando as avaliações, ou qualquer valor para sair. ");
+	scanf("%d", &op);
+	system("cls");
+	fclose(arquivo5);
+	fclose(arquivo6);
+	}while(op==1);
+}//fim da função avaliacao
+
+void pesquisaAvali(){
+	
+	FILE *arquivo6;
+	AVALIACAO avaliacao;
+	do{
+	arquivo6 = fopen("db_BinAvaliacao.txt", "r");
+	system("cls");
+	while(fread(&avaliacao, sizeof(AVALIACAO), 1, arquivo6)==1){
+		printf("\n\nNome: %s \nAvaliação: %s \nObs: %s", avaliacao.nome, avaliacao.avali, avaliacao.obs);		
+	}
+	printf("\n\nDigite 1 para retornar para o menu ");
+	scanf("%d", &op);
+	system("cls");
+	fclose(arquivo6);
+	}while(op!=1);
+}// fim da função consulta avaliacao

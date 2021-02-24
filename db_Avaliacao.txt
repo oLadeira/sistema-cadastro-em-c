@@ -1,0 +1,20 @@
+
+Nome: lucas
+Avaliação: positiva
+Obs: ele gostou de tal coisa
+
+Nome: rosangela
+Avaliação: negativa
+Obs: nao gostou de tal coisa
+
+Nome: lucas
+Avaliação: pos
+Obs: sdasdadsad
+
+Nome: jose
+Avaliação: negativa
+Obs: nao gostou do atendimento
+
+Nome: joao
+Avaliação: negativa
+Obs: nao gostou da estrutura medica
