@@ -9,6 +9,7 @@ typedef struct paciente PACIENTE;
 typedef struct medico MEDICO;
 typedef struct avaliacao AVALIACAO;
 typedef struct funcionario FUNCIONARIO;
+typedef struct consulta CONSULTA;
 
 struct paciente{
 	char nome[SIZE];
@@ -49,19 +50,29 @@ struct funcionario{
 	char salario[SIZE];
 };
 
+struct consulta{
+	char nomeMedico[SIZE];
+	char nomePaci[SIZE];
+	char motivo[SIZE];
+	char valor[SIZE];
+	char dia[SIZE];
+	char mes[SIZE];
+};
+
 int op;
 
 void telaLogin();
 void menu();
 void pesquisa();
 void cadastroPaci();
-// void cadastroAgend();
+void cadastroConsul();
 void cadastroMedi();
 void pesquisaMedi();
 void cadastroFunci();
 void pesquisaFunci();
 void avaliacao();
 // void canc_consulta();
+void pesquisaConsul();
 void pesquisaAvali();
 
 int main(void){
@@ -75,7 +86,9 @@ int main(void){
 	pesquisaMedi();
 	pesquisaFunci();
 	avaliacao();
-	pesquisaAvali();		
+	pesquisaAvali();
+	cadastroConsul();
+	pesquisaConsul();		
 }
 
 void telaLogin(){
@@ -160,10 +173,15 @@ void menu(){
 		printf(" 5 - Consultar médico\n");
 		printf(" 6 - Consultar funcionário\n");
 		printf("---------------------------\n");
-		printf(" 7 - Registrar avaliação\n");
-		printf(" 8 - Consultar avaliações\n");
+		printf(" 7 - Cadastrar consulta\n");
+		printf(" 8 - Consultar consulta\n");
 		printf("---------------------------\n");
-		printf(" 9 - Sair\n");		
+		printf(" 9 - Registrar avaliação\n");
+		printf(" 10 - Consultar avaliações\n");
+		printf("---------------------------\n");
+		printf("\n");
+		printf("\n");
+		printf(" 11 - Sair\n");		
 		scanf("%d", &op);
 		switch(op){
 			case 1:
@@ -185,13 +203,19 @@ void menu(){
 				pesquisaFunci();
 				break;
 			case 7:
-				avaliacao();
+				cadastroConsul();
 				break;
 			case 8:
-				pesquisaAvali();
+				pesquisaConsul();
 				break;
 			case 9:
-				exit(0);				
+				avaliacao();
+				break;
+			case 10:
+				pesquisaAvali();
+				break;
+			case 11:
+				exit(0);					
 			default:
 				printf("\nDigite uma opção válida\n");
 				break;		
@@ -237,6 +261,12 @@ void cadastroPaci(){
 		printf("\nDigite o e-mail do paciente: ");
 		gets(paciente.email);
 		fprintf(arquivo, "Email: %s\n", &paciente.email);
+		
+		fflush(stdin);		
+		fprintf(arquivo, "Data: %s\n", __DATE__); // salvar o horário em que foi cadastrado no arquivo texto(comando __DATE__)
+		fprintf(arquivo, "Horário: %s\n", __TIME__);
+		
+		printf("\nPaciente cadastrado com sucesso ! \n");
 		
 		fwrite(&paciente, sizeof(PACIENTE), 1, arquivo2);
 		printf("\nDigite 1 para continuar cadastrando ou qualquer valor para sair. ");
@@ -344,6 +374,8 @@ do{
 	printf("\nDigite o Email: ");
 	gets(medico.email);
 	fprintf(arquivo3, "Email: %s\n", medico.email);
+	
+	printf("\nMédico cadastrado com sucesso ! \n");
 	
 	fwrite(&medico, sizeof(MEDICO), 1, arquivo4);
 	printf("\nDigite 1 para continuar cadastrando ou outro valor para sair. ");
@@ -508,6 +540,8 @@ void cadastroFunci(){
 		printf("\nDigite o salário do funcionário: ");
 		gets(funcionario.salario);
 		fprintf(arquivo7, "Salário: %s\n", funcionario.salario);
+		
+		printf("\nFuncionário cadastrado com sucesso ! \n");
 
 		fwrite(&funcionario, sizeof(FUNCIONARIO), 1, arquivo8);
 		
@@ -557,4 +591,110 @@ void pesquisaFunci(){
 		system("cls");
 		fclose(arquivo8);
 	}while(op==1);
+}// fim da função consulta funcionario
+
+void cadastroConsul(){
+	
+	CONSULTA consulta;
+	FILE *arquivo9;
+	FILE *arquivo10;
+	
+	do{
+		system("cls");
+		arquivo9 = fopen("db_Consulta.txt", "a");
+		arquivo10 = fopen("db_BinConsulta.txt", "ab");
+		
+		fflush(stdin);
+		printf("\nDigite o nome do Médico da consulta: ");
+		gets(consulta.nomeMedico);
+		fprintf(arquivo9, "\nNome do Médico: %s\n", consulta.nomeMedico);
+		
+		fflush(stdin);
+		printf("\nDigite o nome do paciente: ");
+		gets(consulta.nomePaci);
+		fprintf(arquivo9, "Nome do Paciente: %s\n", consulta.nomePaci);
+		
+		fflush(stdin);
+		printf("\nDigite o motivo da consulta: ");
+		gets(consulta.motivo);
+		fprintf(arquivo9, "Motivo: %s\n", consulta.motivo);
+		
+		fflush(stdin);
+		printf("\nDigite o valor da consulta: ");
+		gets(consulta.valor);
+		fprintf(arquivo9, "Valor: %s\n", consulta.valor);
+		
+		fflush(stdin);
+		printf("\nDigite o dia da consulta: ");
+		gets(consulta.dia);
+		
+		fflush(stdin);
+		printf("\nDigite o mês da consulta: ");
+		gets(consulta.mes);
+		fprintf(arquivo9, "Data consulta:  %s/%s/2020\n",consulta.dia, consulta.mes);
+		
+		fwrite(&consulta, sizeof(CONSULTA), 1 ,arquivo10);
+		
+		printf("\nDigite 1 para continuar cadastrando ou outro valor para sair. ");
+		scanf("%d", &op);
+		system("cls");
+		fclose(arquivo9);
+		fclose(arquivo10);
+	}while(op==1);
+}
+
+void pesquisaConsul(){
+	FILE *arquivo10;
+	CONSULTA consulta;
+	char nomeMediPesquisa[SIZE];
+	char nomePaciPesquisa[SIZE];
+	do{
+		system("cls");
+		arquivo10 = fopen("db_BinConsulta.txt", "r");
+		
+		fflush(stdin);
+		printf("\nDigite 1 para ver todas as consultas registradas, ou 2 para filtrar: ");
+		scanf("%d", &op);
+		switch(op){
+			case 1:
+				while(fread(&consulta, sizeof(CONSULTA), 1, arquivo10)==1){
+					printf("\nNome do médico: %s \nNome do paciente: %s \nMotivo: %s \nValor: %s \nData: %s/%s/2020\n", consulta.nomeMedico, consulta.nomePaci, consulta.motivo, consulta.valor, consulta.dia, consulta.mes);
+				}
+				break;
+			case 2:
+				fflush(stdin);
+				printf("\nDigite 1 para pesquisar pelo nome do doutor(a) ou 2 para pesquisar pelo nome do paciente: ");
+				scanf("%d", &op);
+				switch(op){
+					case 1:
+						fflush(stdin);
+						printf("\nDigite o nome do doutor(a): ");
+						gets(nomeMediPesquisa);
+						while(fread(&consulta, sizeof(CONSULTA), 1, arquivo10)==1){
+							if (strcmp(nomeMediPesquisa, consulta.nomeMedico)==0){
+								printf("\nNome do médico: %s \nNome do paciente: %s \nMotivo: %s \nValor: %s \nData: %s/%s/2020", consulta.nomeMedico, consulta.nomePaci, consulta.motivo, consulta.valor, consulta.dia, consulta.mes);
+							}
+						}
+						break;		
+					case 2:
+						fflush(stdin);
+						printf("\nDigite o nome do paciente: ");
+						gets(nomePaciPesquisa);
+						while(fread(&consulta, sizeof(CONSULTA), 1, arquivo10)==1){
+							if (strcmp(nomePaciPesquisa, consulta.nomePaci)==0){
+								printf("\nNome do médico: %s \nNome do paciente: %s \nMotivo: %s \nValor: %s \nData: %s/%s/2020", consulta.nomeMedico, consulta.nomePaci, consulta.motivo, consulta.valor, consulta.dia, consulta.mes);
+							}	
+						}
+						break;
+					default:
+						printf("Opção Inválida !");
+						break;	
+				}
+		}		
+		
+		printf("\nDigite 1 para continuar consultando ou qualquer valor para sair. ");
+		scanf("%d", &op);
+		system("cls");
+		fclose(arquivo10);
+	}while(op==1);	
 }

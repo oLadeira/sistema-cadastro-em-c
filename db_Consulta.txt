@@ -1,0 +1,18 @@
+
+Nome do Médico: joao
+Nome do Paciente: henrique
+Motivo: sei la
+Valor: 200
+Data consulta:  10 03
+
+Nome do Médico: paula
+Nome do Paciente: paulo
+Motivo: nao sei
+Valor: 100
+Data consulta:  40 05
+
+Nome do Médico: matheus
+Nome do Paciente: jose
+Motivo: cardiologia
+Valor: 300
+Data consulta:  27/10/2020
