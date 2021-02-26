@@ -1,0 +1,30 @@
+
+Nome: Gilberto
+Data de Nascimento: 1987
+CRM: 44312
+Situação: ativo
+CPF: 9984433
+RG: 0022111
+Endereço: rua tal endereco tal
+Telefone: 002292211
+Email: gilberto@gmail.com
+
+Nome: Ana
+Data de Nascimento: 1991
+CRM: 999222
+Situação: ativo
+CPF: 883322
+RG: 8833444
+Endereço: rua endereco numero tal
+Telefone: 2211122
+Email: ana@gmail.com
+
+Nome: thiago souza
+Data de Nascimento: 1968
+CRM: 65666
+Situação: ativo
+CPF: 2003332
+RG: 8844332
+Endereço: rua tal endereco tal
+Telefone: 229333
+Email: thiago@outlook.com

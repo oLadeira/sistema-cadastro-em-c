@@ -1,0 +1,23 @@
+Data do relatório:  Oct 28 2020/12/2020           Totalização Mensal: (null) 
+Data do relatório:  Oct 28 2020           Totalização Mensal: (null) 
+Data do relatório:  Oct 28 2020           Totalização Mensal:  
+Data do relatório:  Oct 28 2020           Totalização Mensal: 200 
+Data do relatório:  Oct 28 2020           Totalização Mensal: 200 200
+Data do relatório:  Oct 28 2020           Totalização Mensal: 200 200
+Data do relatório:  Oct 29 2020           Totalização Mensal: 300 
+Data do relatório:  Oct 29 2020           Totalização Mensal: 700 
+Data do relatório:  Oct 29 2020           Totalização Mensal: 800 
+Data do relatório:  Oct 29 2020           Totalização Mensal: 900 
+Data do relatório:  Oct 29 2020           Totalização desde a data anterior até agora: 0 
+Data do relatório:  Oct 29 2020           Totalização desde a data anterior até agora: 500 
+Data do relatório:  Oct 29 2020        Totalização desde data anterior: 500 
+Data do relatório:  Oct 29 2020        Totalização desde data anterior: R$500 
+Data do relatório:  Oct 29 2020        Totalização desde data anterior: R$500 
+Data do relatório:  Oct 29 2020        Totalização desde data anterior: R$500 
+Data do relatório:  Oct 29 2020        Totalização desde data anterior: R$0 
+Data do relatório:  Oct 29 2020        Totalização desde data anterior: R$700 
+Data do relatório:  Oct 29 2020        Totalização desde data anterior: R$1032 
+Data do relatório:  Oct 29 2020        Totalização desde data anterior: R$1032 
+Data do relatório:  Oct 29 2020        Totalização desde data anterior: R$1032 
+Data do relatório:  Oct 29 2020        Totalização desde data anterior: R$0 
+Data do relatório:  Nov 19 2020        Totalização desde data anterior: R$400 

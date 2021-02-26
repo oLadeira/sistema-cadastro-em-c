@@ -10,6 +10,7 @@ typedef struct medico MEDICO;
 typedef struct avaliacao AVALIACAO;
 typedef struct funcionario FUNCIONARIO;
 typedef struct consulta CONSULTA;
+typedef struct contabi CONTABI;
 
 struct paciente{
 	char nome[SIZE];
@@ -59,6 +60,11 @@ struct consulta{
 	char mes[SIZE];
 };
 
+struct contabi{
+	char data[SIZE];
+	char valor[SIZE];
+};
+
 int op;
 
 void telaLogin();
@@ -74,9 +80,11 @@ void avaliacao();
 // void canc_consulta();
 void pesquisaConsul();
 void pesquisaAvali();
+void gerarRelContab();
 
 int main(void){
 	setlocale(LC_ALL, ""); // acentuação pt-BR
+	system("title CLÍNICAS SANTA TEREZA"); // comando para alterar o título do console
 	telaLogin();
 	menu();
 	cadastroPaci();
@@ -88,7 +96,8 @@ int main(void){
 	avaliacao();
 	pesquisaAvali();
 	cadastroConsul();
-	pesquisaConsul();		
+	pesquisaConsul();
+	gerarRelContab();		
 }
 
 void telaLogin(){
@@ -179,9 +188,11 @@ void menu(){
 		printf(" 9 - Registrar avaliação\n");
 		printf(" 10 - Consultar avaliações\n");
 		printf("---------------------------\n");
+		printf(" 11 - Gerar relatório contábil\n");
+		printf("---------------------------\n");
 		printf("\n");
 		printf("\n");
-		printf(" 11 - Sair\n");		
+		printf(" 12 - Sair\n");		
 		scanf("%d", &op);
 		switch(op){
 			case 1:
@@ -215,7 +226,10 @@ void menu(){
 				pesquisaAvali();
 				break;
 			case 11:
-				exit(0);					
+				gerarRelContab();
+				break;
+			case 12:
+				exit(0);						
 			default:
 				printf("\nDigite uma opção válida\n");
 				break;		
@@ -264,7 +278,6 @@ void cadastroPaci(){
 		
 		fflush(stdin);		
 		fprintf(arquivo, "Data: %s\n", __DATE__); // salvar o horário em que foi cadastrado no arquivo texto(comando __DATE__)
-		fprintf(arquivo, "Horário: %s\n", __TIME__);
 		
 		printf("\nPaciente cadastrado com sucesso ! \n");
 		
@@ -403,12 +416,8 @@ void pesquisaMedi(){
 			scanf("%s", &cpfPesquisa);
 			while(fread(&medico, sizeof(MEDICO), 1, arquivo4)==1){
 					if (strcmp(cpfPesquisa, medico.cpf)==0){
-					printf("\nNome: %s\nData de Nascimento: %s\nCRM: %s\nSituacao: %s\nCPF: %s\nRG: %s\n Endereco: %s\nTelefone: %s\nEmail: %s" , medico.nome, medico.data_nasci, medico.crm, medico.situacao, medico.cpf, medico.rg, medico.endereco, medico.telefone, medico.email);	
+					printf("\nNome: %s\nData de Nascimento: %s\nCRM: %s\nSituacao: %s\nCPF: %s\nRG: %s\nEndereco: %s\nTelefone: %s\nEmail: %s" , medico.nome, medico.data_nasci, medico.crm, medico.situacao, medico.cpf, medico.rg, medico.endereco, medico.telefone, medico.email);	
 				}
-					else if (strcmp(cpfPesquisa, medico.cpf)==1){
-						printf("\nInformação não encontrada!.");
-						break;
-					}
 			}
 				break;
 		case 2:
@@ -418,10 +427,6 @@ void pesquisaMedi(){
 					if (strcmp(crmPesquisa, medico.crm)==0){
 					printf("\nNome: %s\nData de Nascimento: %s\nCRM: %s\nSituacao: %s\nCPF: %s\nRG: %s\n Endereco: %s\nTelefone: %s\nEmail: %s\n" , medico.nome, medico.data_nasci, medico.crm, medico.situacao, medico.cpf, medico.rg, medico.endereco, medico.telefone, medico.email);
 				}
-					else if (strcmp(crmPesquisa, medico.crm)==1){
-						printf("\nInformação não encontrada!.");
-						break;
-					}	
 			}
 				break;
 		default:
@@ -598,11 +603,13 @@ void cadastroConsul(){
 	CONSULTA consulta;
 	FILE *arquivo9;
 	FILE *arquivo10;
+	FILE *arquivo13;
 	
 	do{
 		system("cls");
 		arquivo9 = fopen("db_Consulta.txt", "a");
 		arquivo10 = fopen("db_BinConsulta.txt", "ab");
+		arquivo13 = fopen("temp_contabi.txt", "ab");
 		
 		fflush(stdin);
 		printf("\nDigite o nome do Médico da consulta: ");
@@ -634,12 +641,14 @@ void cadastroConsul(){
 		fprintf(arquivo9, "Data consulta:  %s/%s/2020\n",consulta.dia, consulta.mes);
 		
 		fwrite(&consulta, sizeof(CONSULTA), 1 ,arquivo10);
+		fwrite(&consulta, sizeof(CONSULTA), 1 ,arquivo13);
 		
 		printf("\nDigite 1 para continuar cadastrando ou outro valor para sair. ");
 		scanf("%d", &op);
 		system("cls");
 		fclose(arquivo9);
 		fclose(arquivo10);
+		fclose(arquivo13);
 	}while(op==1);
 }
 
@@ -648,6 +657,8 @@ void pesquisaConsul(){
 	CONSULTA consulta;
 	char nomeMediPesquisa[SIZE];
 	char nomePaciPesquisa[SIZE];
+	char diaPesquisa[SIZE];
+	char mesPesquisa[SIZE];
 	do{
 		system("cls");
 		arquivo10 = fopen("db_BinConsulta.txt", "r");
@@ -662,8 +673,12 @@ void pesquisaConsul(){
 				}
 				break;
 			case 2:
+				system("cls");
 				fflush(stdin);
-				printf("\nDigite 1 para pesquisar pelo nome do doutor(a) ou 2 para pesquisar pelo nome do paciente: ");
+				printf("\nDigite 1 para pesquisar pelo nome do doutor(a).");
+				printf("\nDigite 2 para pesquisar pelo nome do paciente.");
+				printf("\nDigite 3 para pesquisar por data(dia).");
+				printf("\nDigite 4 para pesquisar por data(mês).\n");
 				scanf("%d", &op);
 				switch(op){
 					case 1:
@@ -686,15 +701,81 @@ void pesquisaConsul(){
 							}	
 						}
 						break;
+					case 3:
+						fflush(stdin);
+						printf("\nDigite o dia da consulta: ");
+						gets(diaPesquisa);
+						while(fread(&consulta, sizeof(CONSULTA), 1, arquivo10)==1){
+							if (strcmp(diaPesquisa, consulta.dia)==0){
+								printf("\nNome do médico: %s \nNome do paciente: %s \nMotivo: %s \nValor: %s \nData: %s/%s/2020", consulta.nomeMedico, consulta.nomePaci, consulta.motivo, consulta.valor, consulta.dia, consulta.mes);
+							}
+						}	
+						break;
+					case 4:
+						fflush(stdin);
+						printf("\nDigite o mês da consulta: ");
+						gets(mesPesquisa);
+						while(fread(&consulta, sizeof(CONSULTA), 1, arquivo10)==1){
+							if (strcmp(mesPesquisa, consulta.mes)==0){
+								printf("\nNome do médico: %s \nNome do paciente: %s \nMotivo: %s \nValor: %s \nData: %s/%s/2020", consulta.nomeMedico, consulta.nomePaci, consulta.motivo, consulta.valor, consulta.dia, consulta.mes);
+							}
+						}
+						break;	
 					default:
 						printf("Opção Inválida !");
 						break;	
 				}
 		}		
 		
-		printf("\nDigite 1 para continuar consultando ou qualquer valor para sair. ");
+		printf("\n\nDigite 1 para continuar consultando ou qualquer valor para sair. ");
 		scanf("%d", &op);
 		system("cls");
 		fclose(arquivo10);
 	}while(op==1);	
+}
+
+void gerarRelContab(){
+	FILE *arquivo11;
+	FILE *arquivo10;
+	FILE *arquivo13;
+	CONSULTA consulta;
+	CONTABI contabi;
+	int contabilidade=0;
+	int conversao=0;
+	
+	arquivo10 = fopen("db_BinConsulta.txt", "r");
+	arquivo11 = fopen("relatorioContabi.txt", "a");
+	arquivo13= fopen("temp_contabi.txt", "r");
+	
+	system("cls");
+	printf("\nO relatório será gerado em forma de texto, no arquivo 'relatorioContabi'");
+	printf("\nDigite 1 para gerar um relatório de contabilidade ou qualquer valor para sair.");
+	scanf("%d",&op);
+	switch(op){
+		case 1:
+			while(fread(&consulta, sizeof(CONSULTA), 1, arquivo13)==1){
+			conversao = atoi(consulta.valor); // comando atoi faz a conversão de um dado do tipo char para um dado inteiro
+			contabilidade = contabilidade + conversao;
+			
+
+
+			
+			printf("\nGerando relatório, aguarde ...");
+			sleep(3);
+			printf("\nRelatório gerado com sucesso! ");
+			sleep(1.5);
+			op = 1;
+		}
+			
+		default:
+			break;	
+	}
+	
+	if (op == 1){
+		fclose(arquivo13);
+		remove("temp_contabi.txt");
+		printf("%d", contabilidade);
+		fprintf(arquivo11, "Data do relatório:  %s        Totalização desde data anterior: R$%d \n",__DATE__, contabilidade);
+		fclose(arquivo11);
+	}
 }

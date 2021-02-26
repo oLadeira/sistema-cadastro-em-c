@@ -1,18 +1,48 @@
 
-Nome do Médico: joao
-Nome do Paciente: henrique
-Motivo: sei la
+Nome do Médico: fulano
+Nome do Paciente: ciclano
+Motivo: aaaa
 Valor: 200
-Data consulta:  10 03
+Data consulta:  23/10/2020
 
-Nome do Médico: paula
-Nome do Paciente: paulo
-Motivo: nao sei
-Valor: 100
-Data consulta:  40 05
+Nome do Médico: tal
+Nome do Paciente: lal
+Motivo: aaa
+Valor: 500
+Data consulta:  22/5/2020
 
-Nome do Médico: matheus
-Nome do Paciente: jose
-Motivo: cardiologia
+Nome do Médico: teste
+Nome do Paciente: teste
+Motivo: teste
 Valor: 300
-Data consulta:  27/10/2020
+Data consulta:  22/32/2020
+
+Nome do Médico: aaaa
+Nome do Paciente: dddd
+Motivo: ccc
+Valor: 500
+Data consulta:  22/12/2020
+
+Nome do Médico: tal
+Nome do Paciente: teste
+Motivo: aaa
+Valor: 200
+Data consulta:  20/2/2020
+
+Nome do Médico: eeeee
+Nome do Paciente: aaaa
+Motivo: eeee
+Valor: 500
+Data consulta:  2/3/2020
+
+Nome do Médico: fulano
+Nome do Paciente: ciclano
+Motivo: aaa
+Valor: 1032
+Data consulta:  2/3/2020
+
+Nome do Médico: antonio
+Nome do Paciente: leticia
+Motivo: cardiologia
+Valor: 400
+Data consulta:  19/11/2020
